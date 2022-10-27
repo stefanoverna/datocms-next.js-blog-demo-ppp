@@ -28,8 +28,8 @@ async function installSeoReadabilityPlugin(client) {
 
   await client.plugins.update(seoReadabilityPlugin, {
     parameters: {
-      htmlGeneratorUrl: `${baseUrl}/api/readability-metadata`,
-      autoApplyToFieldsWithApiKey: 'seo_readability',
+      htmlGeneratorUrl: `${baseUrl}/api/seo-readability-metadata`,
+      autoApplyToFieldsWithApiKey: 'seo_readability_analysis',
     },
   });
 }

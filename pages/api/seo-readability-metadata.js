@@ -10,7 +10,7 @@ const baseUrl = process.env.VERCEL_URL
 const findSlugAndUrlForItem = (item, itemTypeApiKey) => {
   switch (itemTypeApiKey) {
     case 'post':
-      return [item.attributes.slug, `/posts/${item.attributes.slug}`];
+      return [item.slug, `/posts/${item.slug}`];
     default:
       return null;
   }
@@ -29,15 +29,16 @@ const handler = async (req, res) => {
 
   const client = buildClient({
     apiToken: process.env.NEXT_EXAMPLE_CMS_DATOCMS_API_TOKEN,
+    environment: req.query.sandboxEnvironmentId,
   });
 
   const item = await client.items.find(req.query.itemId);
 
-  const result = await findSlugAndUrlForItem(item, req.query.itemTypeApiKey);
+  const result = findSlugAndUrlForItem(item, req.query.itemTypeApiKey);
 
   if (!result) {
     return res.status(422).json({
-      error: `Don\'t know which route corresponds to record #${req.query.itemId}!`,
+      error: `Record #${req.query.itemId} does not have a route on the frontend!`,
     });
   }
 
@@ -69,7 +70,7 @@ const handler = async (req, res) => {
 
   if (!contentEl) {
     res.status(422).json({
-      error: `Can't find any div with ID=main-content on page ${url}!`,
+      error: `Page ${url} does not have an element with ID "main-content"!`,
     });
     return;
   }
@@ -84,7 +85,7 @@ const handler = async (req, res) => {
   res.status(200).json({
     locale,
     slug,
-    permalink,
+    permalink: url,
     title,
     description,
     content,
