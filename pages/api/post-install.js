@@ -16,6 +16,7 @@ async function installWebPreviewsPlugin(client) {
       frontends: [
         { name: 'Production', previewWebhook: `${baseUrl}/api/preview-links` },
       ],
+      startOpen: true,
     },
   });
 }
